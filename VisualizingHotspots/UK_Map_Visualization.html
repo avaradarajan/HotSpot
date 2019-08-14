@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>UK Accident Hotspots Map</title>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+</head>
+<body>
+	<!-- Page elements and content go here. -->
+	<script>
+
+// <svg width="960" height="1160" onload = "myFunction('geo')"></svg>
+// Width and Height of the whole visualization
+var width = 960;
+var height = 1160;
+
+// Create SVG
+		var svg = d3.select( "body" )
+		    .append( "svg" )
+		    .attr( "width", width )
+		    .attr( "height", height );
+
+// Append empty placeholder g element to the SVG
+// g will contain geometry elements
+		var g = svg.append( "g" )
+							 .attr("transform","translate(" + 300 + "," + 500 + ")")
+
+
+		// var path = d3.geo.path()
+		// 		.projection(projection);
+
+//create Albers equal area conic projection centered on UK
+		var projection = d3.geoAlbers()
+    .center([0, 55.4])
+    .rotate([4.4, 0])
+    .parallels([50, 60])
+    .scale(3500)
+    .translate([100,-150]);
+
+			var path = d3.geoPath()
+			    .projection( projection );
+
+				d3.json("uk.json", function(error, jsondata) {
+				if (error) return console.error(error);
+				console.log(jsondata);
+				console.log(jsondata.features.length);
+
+				g.selectAll( "path" )
+				    .data(jsondata.features)
+				    .enter()
+				    .append( "path" )
+						.attr( "d", path )
+				    .style( "fill", "#ccc" )
+				    .style( "stroke", "#333")
+
+				});
+
+// Map the cities I have lived in!
+//uklatlong
+d3.csv("Hotspots.csv", function(data) {
+
+svg.selectAll("circle")
+	.data(data)
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+		return projection([d.lon, d.lat])[0];
+	})
+	.attr("cy", function(d) {
+		return projection([d.lon, d.lat])[1];
+	})
+	.attr("r", function(d) {
+		// console.log(d.casualities);
+		if(d.casualities>40)
+		return 10;
+		else
+		return 3;
+	})
+	.attr("transform","translate(" + 300 + "," + 500 + ")")
+		.style("fill", "rgb(217,91,67)")
+		.style("opacity", 0.85)
+});
+
+
+	</script>
+</body>
+</html>

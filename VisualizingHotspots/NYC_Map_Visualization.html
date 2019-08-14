@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>NYC Accident Hotspots Map</title>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+</head>
+<body>
+	<!-- Page elements and content go here. -->
+	<script>
+
+
+// Width and Height of the whole visualization
+var width = 960;
+var height = 720;
+
+// Create SVG
+		var svg = d3.select( "body" )
+		    .append( "svg" )
+		    .attr( "width", width )
+		    .attr( "height", height );
+
+// Append empty placeholder g element to the SVG
+// g will contain geometry elements
+		var g = svg.append( "g" )
+							 .attr("transform","translate(" + 50 + "," + 50 + ")")
+
+// var circleProjection = d3.geoMercator().scale(100000).center([-106, 37.5]).translate( [-55500,7500] );
+var circleProjection = d3.geoMercator().scale(50000).center([width/2, height/2]).translate( [169670,39230] );
+
+//create Albers equal area conic projection centered on NYC
+		var projection = d3.geoAlbers()
+					 // .rotate( [71.057,0] )
+					 // .rotate([-20, -50, 0])
+					 .rotate( [40,0] )
+				   .translate([width/2, height/2])    // translate to center of screen
+				   .scale([1]);
+
+				var path = d3.geoPath()
+				    .projection( projection );
+
+	d3.json("nyc_2.json", function(error, nyc) {
+	if (error) return console.error(error);
+
+	var path = d3.geoPath()
+      .projection(d3.geoConicConformal()
+      .parallels([33, 45])
+      .rotate([96, -39])
+      .fitSize([width, height], nyc));
+
+				g.selectAll( "path" )
+				    .data(nyc.features)
+				    .enter()
+				    .append( "path" )
+						.attr( "d", path )
+				    .style( "fill", "#ccc" )
+				    .style( "stroke", "#333")
+
+				});
+
+
+				// Map the cities I have lived in!
+
+				d3.csv("NYC_Plots.csv", function(data) {
+
+				svg.selectAll("circle")
+					.data(data)
+					.enter()
+					.append("circle")
+					.attr("cx", function(d) {
+
+
+						console.log(circleProjection([d.lon, d.lat]));
+						return circleProjection([d.lon, d.lat])[0];
+
+					})
+					.attr("cy", function(d) {
+						return circleProjection([d.lon, d.lat])[1];
+
+					})
+					.attr("r", function(d) {
+
+						return 5;
+
+					})
+					
+						.style("fill", "rgb(217,91,67)")
+						.style("opacity", 0.85)
+				});
+
+	</script>
+</body>
+</html>

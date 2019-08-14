@@ -1,0 +1,12 @@
+References
+https://gist.github.com/crofty/1366698
+http://duspviz.mit.edu/d3-workshop/mapping-data-with-d3/
+http://bl.ocks.org/samuelleach/5130413
+https://chrisalbon.com/python/data_wrangling/geocoding_and_reverse_geocoding/
+https://archive.org/search.php?query=collection%3Atwitterstream&sort=-publicdate
+https://pypi.org/project/GetOldTweets3/
+https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.MultiLabelBinarizer.html
+https://www.digitalocean.com/community/tutorials/how-to-build-a-machine-learning-classifier-in-python-with-scikit-learn?fbclid=IwAR3yQMxvt7VrdTi493IaXiKFs71sZMwnL49DTrqwC-FAap8IZb6ga8sI6LM
+https://data.gov.uk/
+https://data.gov.uk/search?q=Road+safety+data
+https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95
